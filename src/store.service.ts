@@ -1,7 +1,9 @@
 import {Injectable, Injector} from 'angular2/core';
 import {Http} from 'angular2/http';
-import {StoreConfig} from './store.config';
 import 'rxjs/Rx';
+
+import {StoreConfig} from './store.config';
+import {BaseModel} from './base.model';
 
 let instance = null;
 
@@ -35,6 +37,13 @@ export class StoreService {
     }
   }
 
+  modelize(model: string) {
+    return m => {
+      m._model = model;
+      return new BaseModel(m, this);
+    }
+  }
+
   buildUri(model: string) {
     return `${StoreService.config.baseUri}/${this.simplePluralize(model) }`
   }
@@ -47,14 +56,14 @@ export class StoreService {
    * GET /model
    */
   find(model: string, params: Object = {}) {
-    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]);
+    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map(this.modelize(model));
   }
 
   /**
    * GET /model/:id
    */
   findOne(model: string, id: number) {
-    return this.http.get(`${this.buildUri(model) }/${id}`).map(r => r.json()[model]);
+    return this.http.get(`${this.buildUri(model) }/${id}`).map(r => r.json()[model]).map(this.modelize(model));
   }
 
   /**
@@ -63,7 +72,7 @@ export class StoreService {
   create(model: string, body: Object) {
     let data = {};
     data[model] = body;
-    return this.http.post(this.buildUri(model), JSON.stringify(data)).map(r => r.json()[model]);
+    return this.http.post(this.buildUri(model), JSON.stringify(data)).map(r => r.json()[model]).map(this.modelize(model));
   }
 
   /**
@@ -72,7 +81,7 @@ export class StoreService {
   update(model: string, id: number, body: Object) {
     let data = {};
     data[model] = body;
-    return this.http.put(`${this.buildUri(model) }/${id}`, JSON.stringify(data)).map(r => r.json()[model]);
+    return this.http.put(`${this.buildUri(model) }/${id}`, JSON.stringify(data)).map(r => r.json()[model]).map(this.modelize(model));
   }
 
   /**
