@@ -1,0 +1,57 @@
+{
+  "name": "ng2-data",
+  "version": "0.0.1",
+  "description": "Convential HTTP client for Model Data in Angular 2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raghunat/ng2-data.git"
+  },
+  "main": "src/ng2-data.js",
+  "scripts": {
+    "start": "concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "lite": "lite-server",
+    "typings": "typings",
+    "postinstall": "typings install",
+    "test": "./node_modules/karma/bin/karma start"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "data",
+    "orm",
+    "http"
+  ],
+  "author": "raghunat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raghunat/ng2-data/issues"
+  },
+  "typings": "./ng2-data.d.ts",
+  "homepage": "https://github.com/raghunat/ng2-data#readme",
+  "dependencies": {
+    "angular2": "2.0.0-beta.9",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.33.3",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2",
+    "zone.js": "0.5.15"
+  },
+  "devDependencies": {
+    "body-parser": "^1.15.0",
+    "concurrently": "^2.0.0",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "glob": "^7.0.3",
+    "jasmine-core": "^2.4.1",
+    "jasmine-spec-reporter": "^2.4.0",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.7",
+    "karma-mocha-reporter": "^2.0.0",
+    "lite-server": "^2.1.0",
+    "systemjs": "~0.19.24",
+    "typescript": "~1.7.5"
+  }
+}
