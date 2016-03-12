@@ -3,6 +3,7 @@ import {Http} from 'angular2/http';
 import {StoreConfig} from './store.config';
 import 'rxjs/Rx';
 
+let instance = null;
 
 @Injectable()
 export class StoreService {
@@ -35,10 +36,10 @@ export class StoreService {
   }
 
   buildUri(model: string) {
-    return `${StoreService.config.baseUri}/${this.simplePluralize(model)}`
+    return `${StoreService.config.baseUri}/${this.simplePluralize(model) }`
   }
 
-  makeRequest(method:string, uri:string, params:Object) {
+  makeRequest(method: string, uri: string, params: Object) {
     return this.http[method](uri, params);
   }
 
@@ -53,7 +54,7 @@ export class StoreService {
    * GET /model/:id
    */
   findOne(model: string, id: number) {
-    return this.http.get(`${this.buildUri(model)}/${id}`).map(r => r.json()[model]);
+    return this.http.get(`${this.buildUri(model) }/${id}`).map(r => r.json()[model]);
   }
 
   /**
@@ -68,16 +69,16 @@ export class StoreService {
   /**
    * PUT /model/:id
    */
-  update(model: string, id:number, body: Object) {
+  update(model: string, id: number, body: Object) {
     let data = {};
     data[model] = body;
-    return this.http.put(`${this.buildUri(model)}/${id}`, JSON.stringify(data)).map(r => r.json()[model]);
+    return this.http.put(`${this.buildUri(model) }/${id}`, JSON.stringify(data)).map(r => r.json()[model]);
   }
 
   /**
    * DELETE /model/:id
    */
   destroy(model: string, id: number) {
-    return this.http.delete(`${this.buildUri(model)}/${id}`).map(r => r.json());
+    return this.http.delete(`${this.buildUri(model) }/${id}`).map(r => r.json());
   }
 }

@@ -1,4 +1,4 @@
-# NOT READY!
+# NOT READY! THE BELOW EXAMPLES ARE FOR END USE REFERENCE
 ## ng2-data
 Conventional HTTP client for Model Data in Angular 2
 
@@ -11,11 +11,11 @@ import {Model, Type} from 'ng2-data';
 exports Model.define('student', {
   name: Type.string,
   age: Type.number,
-  // classes: Type.has.many('courses'),
-  // school: Type.has.one('school'),
-  // nameAndAge: function (student) {
-  //   return student.name + student.age;
-  // }
+  classes: Type.has.many('courses'),
+  school: Type.has.one('school'),
+  nameAndAge: function (student) {
+    return student.name + student.age;
+  }
 });
 ```
 
