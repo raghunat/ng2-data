@@ -2,8 +2,8 @@
  * Input Class
  */
 export class StoreConfig {
-  public baseUri: string
-  constructor(config:any = {}) {
+  public baseUri: string;
+  constructor(config: any = {}) {
     config = config || {};
 
     // TODO
