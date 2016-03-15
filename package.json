@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git+https://github.com/raghunat/ng2-data.git"
   },
-  "main": "src/ng2-data.js",
+  "main": "src/store.service",
   "scripts": {
     "start": "concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "tsc": "tsc",
