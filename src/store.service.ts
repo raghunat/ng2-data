@@ -18,7 +18,7 @@ export class StoreService {
     StoreService.config = config;
   }
 
-  generateRequestOptions(url, method) {
+  generateRequestOptions(url, method, queryParameters, body) {
     if (StoreService.customGenerateOptions) {
       let options = new RequestOptions();
       let createdHeaders = StoreService.customGenerateOptions(url, method);
@@ -68,7 +68,7 @@ export class StoreService {
     return `${StoreService.config.baseUri}/${this.simplePluralize(model) }`
   }
 
-  makeRequest(method: string, uri: string, params: Object) {
+  makeRequest(method: string, uri: string, params: Object, body:Object = null) {
 
     // build query string
     let queryParams = new URLSearchParams();
@@ -77,11 +77,18 @@ export class StoreService {
     });
 
     // Create request options
-    let options:RequestOptions = this.generateRequestOptions(uri, method);
+    let options:RequestOptions = this.generateRequestOptions(uri, method, params, body);
 
     // Add query string
     options.search = queryParams;
-    return this.http[method](uri, options);
+
+    // Switch api based on method
+    switch(method) {
+      case 'get':
+        return this.http[method](uri, options);
+      default:
+        return this.http[method](uri, options, JSON.stringify(body));
+    }
   }
 
   rawRequest(method: string, route: string, params: Object, body:Object) {
