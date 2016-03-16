@@ -49,7 +49,14 @@ export class StoreService {
   }
 
   makeRequest(method: string, uri: string, params: Object) {
-    return this.http[method](uri, params);
+    let queryParams = new URLSearchParams();
+
+    Object.keys(params).forEach(k => {
+      queryParams.set(k, params[k])
+    });
+    return this.http[method](uri, {
+      search: queryParams
+    });
   }
 
   rawRequest(method: string, route: string, params: Object, body:Object) {
@@ -60,16 +67,7 @@ export class StoreService {
    * GET /model
    */
   find(model: string, params: Object = {}) {
-    let queryParams = new URLSearchParams();
-
-    Object.keys(params).forEach(k => {
-      queryParams.set(k, params[k]);
-    });
-
-    // Trim last & if needed
-    return this.makeRequest('get', this.buildUri(model), {
-      search: queryParams
-    }).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
+    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
       let results = [];
       array.forEach(i => {
         i._model = model;
