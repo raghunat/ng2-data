@@ -9,7 +9,7 @@ let instance = null;
 
 @Injectable()
 export class StoreService {
-  private static config: StoreConfig
+  public static config: StoreConfig
 
   constructor(private http: Http) {}
 
@@ -50,6 +50,10 @@ export class StoreService {
 
   makeRequest(method: string, uri: string, params: Object) {
     return this.http[method](uri, params);
+  }
+
+  rawRequest(method: string, route: string, params: Object, body:Object) {
+    return this.http[method](`${StoreService.config.baseUri}/${route}`, params, body);
   }
 
   /**
