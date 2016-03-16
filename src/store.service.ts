@@ -21,7 +21,7 @@ export class StoreService {
   generateRequestOptions(url, method, queryParameters, body) {
     if (StoreService.customGenerateOptions) {
       let options = new RequestOptions();
-      let createdHeaders = StoreService.customGenerateOptions(url, method);
+      let createdHeaders = StoreService.customGenerateOptions(url, method, queryParameters, body);
       let newHeaders = new Headers();
       Object.keys(createdHeaders).forEach(k => {
         newHeaders.set(k, createdHeaders[k]);
