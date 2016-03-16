@@ -60,7 +60,13 @@ export class StoreService {
    * GET /model
    */
   find(model: string, params: Object = {}) {
-    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map(this.modelize(model));
+    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
+      let results = [];
+      array.forEach(i => {
+        results.push(new BaseModel(i, this));
+      });
+      return results;
+    });
   }
 
   /**
