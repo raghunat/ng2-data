@@ -1,5 +1,5 @@
 import {Injectable, Injector} from 'angular2/core';
-import {Http, URLSearchParams, BaseRequestOptions, RequestOptions} from 'angular2/http';
+import {Http, URLSearchParams, BaseRequestOptions, RequestOptions, Headers} from 'angular2/http';
 import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
@@ -21,10 +21,12 @@ export class StoreService {
   generateRequestOptions(url, method) {
     if (StoreService.customGenerateOptions) {
       let options = new RequestOptions();
-      let newHeaders = StoreService.customGenerateOptions(url, method);
+      let createdHeaders = StoreService.customGenerateOptions(url, method);
+      let newHeaders = new Headers();
       Object.keys(newHeaders).forEach(k => {
-        options.set(k, newHeaders[k]);
+        newHeaders.set(k, newHeaders[k]);
       });
+      options.headers = newHeaders
       return options;
     } else {
       return new RequestOptions();
