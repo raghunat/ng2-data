@@ -23,7 +23,7 @@ export class StoreService {
       let options = new RequestOptions();
       let createdHeaders = StoreService.customGenerateOptions(url, method);
       let newHeaders = new Headers();
-      Object.keys(newHeaders).forEach(k => {
+      Object.keys(createdHeaders).forEach(k => {
         newHeaders.set(k, newHeaders[k]);
       });
       options.headers = newHeaders
