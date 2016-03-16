@@ -1,5 +1,5 @@
 import {Injectable, Injector} from 'angular2/core';
-import {Http} from 'angular2/http';
+import {Http, URLSearchParams} from 'angular2/http';
 import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
@@ -60,8 +60,15 @@ export class StoreService {
    * GET /model
    */
   find(model: string, params: Object = {}) {
+    let queryParams = new URLSearchParams();
+
+    Object.keys(params).forEach(k => {
+      queryParams.set(k, params[k]);
+    });
+
+    // Trim last & if needed
     return this.makeRequest('get', this.buildUri(model), {
-      search: params
+      search: queryParams
     }).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
       let results = [];
       array.forEach(i => {
