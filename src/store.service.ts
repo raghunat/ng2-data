@@ -63,6 +63,7 @@ export class StoreService {
     return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
       let results = [];
       array.forEach(i => {
+        i._model = model;
         results.push(new BaseModel(i, this));
       });
       return results;
