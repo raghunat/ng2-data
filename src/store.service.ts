@@ -119,25 +119,25 @@ export class StoreService {
   /**
    * POST /model
    */
-  create(model: string, body: Object) {
+  create(model: string, body: Object, params: Object = {}) {
     let data = {};
     data[model] = body;
-    return this.http.post(this.buildUri(model), JSON.stringify(data)).map(r => r.json()[model]).map(this.modelize(model));
+    return this.makeRequest('post', this.buildUri(model), params, data).map(r => r.json()[model]).map(this.modelize(model));
   }
 
   /**
    * PUT /model/:id
    */
-  update(model: string, id: number, body: Object) {
+  update(model: string, id: number, body: Object, params: Object = {}) {
     let data = {};
     data[model] = body;
-    return this.http.put(`${this.buildUri(model) }/${id}`, JSON.stringify(data)).map(r => r.json()[model]).map(this.modelize(model));
+    return this.makeRequest('put', `${this.buildUri(model) }/${id}`, params, data).map(r => r.json()[model]).map(this.modelize(model));
   }
 
   /**
    * DELETE /model/:id
    */
-  destroy(model: string, id: number) {
-    return this.http.delete(`${this.buildUri(model) }/${id}`).map(r => r.json());
+  destroy(model: string, id: number, body:Object = null, params = {}) {
+    return this.makeRequest('delete', `${this.buildUri(model) }/${id}`, params, body).map(r => r.json());
   }
 }
