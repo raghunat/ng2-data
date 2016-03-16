@@ -1,5 +1,5 @@
 import {Injectable, Injector} from 'angular2/core';
-import {Http, URLSearchParams} from 'angular2/http';
+import {Http, URLSearchParams, RequestOptions} from 'angular2/http';
 import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
@@ -54,9 +54,11 @@ export class StoreService {
     Object.keys(params).forEach(k => {
       queryParams.set(k, params[k])
     });
-    return this.http[method](uri, {
-      search: queryParams
-    });
+
+    let options = new RequestOptions();
+    options.search = queryParams
+
+    return this.http[method](uri, options);
   }
 
   rawRequest(method: string, route: string, params: Object, body:Object) {
