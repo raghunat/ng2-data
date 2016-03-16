@@ -49,16 +49,15 @@ export class StoreService {
   }
 
   makeRequest(method: string, uri: string, params: Object) {
-    let queryParams = new URLSearchParams();
-
+    let paramString = '?';
+    let rawParameters = [];
     Object.keys(params).forEach(k => {
-      queryParams.set(k, params[k])
+      rawParameters.push(`${k}=${encodeURIComponent(params[k])}`);
     });
 
-    let options = new RequestOptions();
-    options.search = queryParams
+    paramString += rawParameters.join('&');
 
-    return this.http[method](uri, options);
+    return this.http[method](uri + paramString, params);
   }
 
   rawRequest(method: string, route: string, params: Object, body:Object) {
