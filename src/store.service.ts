@@ -1,5 +1,5 @@
 import {Injectable, Injector} from 'angular2/core';
-import {Http, URLSearchParams} from 'angular2/http';
+import {Http, URLSearchParams, BaseRequestOptions, RequestOptions} from 'angular2/http';
 import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
@@ -10,11 +10,29 @@ let instance = null;
 @Injectable()
 export class StoreService {
   public static config: StoreConfig
+  public static customGenerateOptions: Function;
 
   constructor(private http: Http) {}
 
   init(config: StoreConfig) {
     StoreService.config = config;
+  }
+
+  generateRequestOptions(url, method) {
+    if (StoreService.customGenerateOptions) {
+      let options = new RequestOptions();
+      let newHeaders = StoreService.customGenerateOptions(url, method);
+      Object.keys(newHeaders).forEach(k => {
+        options.set(k, newHeaders[k]);
+      });
+      return options;
+    } else {
+      return new RequestOptions();
+    }
+  }
+
+  extendHeaders(fn: Function) {
+    StoreService.customGenerateOptions = fn;
   }
 
   simplePluralize(noun: string) {
@@ -49,15 +67,19 @@ export class StoreService {
   }
 
   makeRequest(method: string, uri: string, params: Object) {
-    let queryParams = new URLSearchParams();
 
+    // build query string
+    let queryParams = new URLSearchParams();
     Object.keys(params).forEach(k => {
       queryParams.set(k, params[k])
     });
-    
-    return this.http[method](uri, {
-      search: queryParams
-    });
+
+    // Create request options
+    let options:RequestOptions = this.generateRequestOptions(uri, method);
+
+    // Add query string
+    options.search = queryParams;
+    return this.http[method](uri, options);
   }
 
   rawRequest(method: string, route: string, params: Object, body:Object) {
