@@ -112,8 +112,8 @@ export class StoreService {
   /**
    * GET /model/:id
    */
-  findOne(model: string, id: number) {
-    return this.http.get(`${this.buildUri(model) }/${id}`).map(r => r.json()[model]).map(this.modelize(model));
+  findOne(model: string, id: number, params: Object = {}) {
+    return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params).map(r => r.json()[model]).map(this.modelize(model));
   }
 
   /**
