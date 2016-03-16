@@ -60,7 +60,9 @@ export class StoreService {
    * GET /model
    */
   find(model: string, params: Object = {}) {
-    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
+    return this.makeRequest('get', this.buildUri(model), {
+      search: params
+    }).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
       let results = [];
       array.forEach(i => {
         i._model = model;
