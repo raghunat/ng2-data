@@ -1,8 +1,8 @@
 import {StoreService} from './store.service';
 
 export class BaseModel {
-  public id:any
-  public _model:string
+  public id:any;
+  public _model:string;
 
   constructor(params:Object = {}, private store: StoreService) {
     Object.assign(this, params);
@@ -20,3 +20,4 @@ export class BaseModel {
     return this.store.destroy(this._model, this.id);
   }
 }
+

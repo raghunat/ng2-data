@@ -1,11 +1,8 @@
 import {
-  beforeEach,
-  beforeEachProviders,
   describe,
   expect,
   it,
   inject,
-  injectAsync
 } from 'angular2/testing';
 
 import {StoreConfig} from './store.config';

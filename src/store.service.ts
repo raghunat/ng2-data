@@ -1,15 +1,14 @@
-import {Injectable, Injector} from 'angular2/core';
-import {Http, URLSearchParams, BaseRequestOptions, RequestOptions, Headers} from 'angular2/http';
+import {Injectable} from 'angular2/core';
+import {Http, URLSearchParams, RequestOptions, Headers} from 'angular2/http';
 import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
 import {BaseModel} from './base.model';
 
-let instance = null;
 
 @Injectable()
 export class StoreService {
-  public static config: StoreConfig
+  public static config: StoreConfig;
   public static customGenerateOptions: Function;
 
   constructor(private http: Http) {}
@@ -26,7 +25,7 @@ export class StoreService {
       Object.keys(createdHeaders).forEach(k => {
         newHeaders.set(k, createdHeaders[k]);
       });
-      options.headers = newHeaders
+      options.headers = newHeaders;
       return options;
     } else {
       return new RequestOptions();
@@ -61,11 +60,11 @@ export class StoreService {
     return m => {
       m._model = model;
       return new BaseModel(m, this);
-    }
+    };
   }
 
   buildUri(model: string) {
-    return `${StoreService.config.baseUri}/${this.simplePluralize(model) }`
+    return `${StoreService.config.baseUri}/${this.simplePluralize(model)}`;
   }
 
   makeRequest(method: string, uri: string, params: Object, body:Object = null) {
@@ -73,7 +72,7 @@ export class StoreService {
     // build query string
     let queryParams = new URLSearchParams();
     Object.keys(params).forEach(k => {
-      queryParams.set(k, params[k])
+      queryParams.set(k, params[k]);
     });
 
     // Create request options
