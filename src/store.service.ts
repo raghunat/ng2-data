@@ -98,7 +98,9 @@ export class StoreService {
    * GET /model
    */
   find(model: string, params: Object = {}) {
-    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
+    return this.makeRequest('get', this.buildUri(model), params)
+    .map(r => r.json()[this.simplePluralize(model)])
+    .map((array) => {
       let results = [];
       array.forEach(i => {
         i._model = model;
@@ -112,7 +114,9 @@ export class StoreService {
    * GET /model/:id
    */
   findOne(model: string, id: number, params: Object = {}) {
-    return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params).map(r => r.json()[model]).map(this.modelize(model));
+    return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params)
+    .map(r => r.json()[model])
+    .map(this.modelize(model));
   }
 
   /**

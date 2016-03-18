@@ -1,8 +1,10 @@
 import {StoreService} from './store.service';
 
 export class BaseModel {
+  public static define: Function;
   public id:any;
   public _model:string;
+
 
   constructor(params:Object = {}, private store: StoreService) {
     Object.assign(this, params);
@@ -18,6 +20,12 @@ export class BaseModel {
 
   destroy() {
     return this.store.destroy(this._model, this.id);
+  }
+/**
+Definition of statically defined method
+**/
+   define(model: string, params: Object = {}) {
+     return this.store.find(model, params);
   }
 }
 
