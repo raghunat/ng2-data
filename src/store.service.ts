@@ -40,6 +40,7 @@ export class StoreService {
   simplePluralize(noun: string) {
     switch (noun[noun.length - 1]) {
       case 's':
+      case 'x':
         return noun + 'es';
       case 'y':
         switch (noun[noun.length - 2]) {
@@ -50,7 +51,7 @@ export class StoreService {
           case 'u':
             return noun + 's';
           default:
-            return noun.substring(0, noun.length - 2) + 'ies';
+            return noun.substring(0, noun.length - 1) + 'ies';
         }
       default:
         return noun + 's';
