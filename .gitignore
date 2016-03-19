@@ -8,3 +8,4 @@ Thumbs.db
 src/**/*.js
 *.map
 *.d.ts
+.idea
