@@ -89,7 +89,7 @@ export class StoreService {
       case 'get':
         return this.http[method](uri, options);
       default:
-        return this.http[method](uri, options, JSON.stringify(body));
+        return this.http[method](uri, JSON.stringify(body), options);
     }
   }
 
