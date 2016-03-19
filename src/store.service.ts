@@ -10,13 +10,16 @@ import {BaseModel} from './base.model';
 export class StoreService {
   public static config: StoreConfig;
   public static customGenerateOptions: Function;
+  public static registedModel: Object[];
+
+
 
   constructor(private http: Http) {}
 
   init(config: StoreConfig) {
     StoreService.config = config;
-  }
 
+  }
   generateRequestOptions(url, method, queryParameters, body) {
     if (StoreService.customGenerateOptions) {
       let options = new RequestOptions();
@@ -56,9 +59,9 @@ export class StoreService {
     }
   }
 
-  modelize(model: string) {
+  modelize(model: Object) {
     return m => {
-      m._model = model;
+      m._model = model.name;
       return new BaseModel(m, this);
     };
   }
@@ -89,6 +92,14 @@ export class StoreService {
         return this.http[method](uri, options, JSON.stringify(body));
     }
   }
+  validateModel(name:string) {
+    for (var i = 0; i < StoreService.registedModel.length; i++) {
+      if (StoreService.registedModel[i].name === name) {
+        return StoreService.registedModel[i];
+      }
+    }
+    throw Error('Invalid Model name');
+  }
 
   rawRequest(method: string, route: string, params: Object, body:Object) {
     return this.http[method](`${StoreService.config.baseUri}/${route}`, params, body);
@@ -98,13 +109,14 @@ export class StoreService {
    * GET /model
    */
   find(model: string, params: Object = {}) {
-    return this.makeRequest('get', this.buildUri(model), params)
+    let instanceModel = this.validateModel(model);
+    return this.makeRequest('get', this.buildUri(instanceModel.name), params)
     .map(r => r.json()[this.simplePluralize(model)])
     .map((array) => {
       let results = [];
       array.forEach(i => {
         i._model = model;
-        results.push(new BaseModel(i, this));
+        results.push(this.modelize(instanceModel));
       });
       return results;
     });
@@ -114,9 +126,10 @@ export class StoreService {
    * GET /model/:id
    */
   findOne(model: string, id: number, params: Object = {}) {
-    return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params)
-    .map(r => r.json()[model])
-    .map(this.modelize(model));
+    let instanceModel = this.validateModel(model);
+    return this.makeRequest('get', `${this.buildUri(instanceModel.name) }/${id}`, params)
+    .map(r => r.json()[instanceModel.name])
+     .map(this.modelize(instanceModel));
   }
 
   /**

@@ -1,9 +1,16 @@
 import {StoreService} from './store.service';
 
 export class BaseModel {
-  public static define: Function;
-  public id:any;
-  public _model:string;
+
+  public id: any;
+  public _model: string;
+
+  /**
+Definition of statically defined method
+**/
+  public static define(model: string, defObject: Object = {}) {
+    StoreService.registedModel.push({ name: model, defObject: defObject });
+  }
 
 
   constructor(params:Object = {}, private store: StoreService) {
@@ -21,11 +28,7 @@ export class BaseModel {
   destroy() {
     return this.store.destroy(this._model, this.id);
   }
-/**
-Definition of statically defined method
-**/
-   define(model: string, params: Object = {}) {
-     return this.store.find(model, params);
-  }
+
+
 }
 
