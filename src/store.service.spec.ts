@@ -1,18 +1,14 @@
 import {
 it,
-iit,
 describe,
-ddescribe,
 expect,
 inject,
-injectAsync,
-TestComponentBuilder,
 beforeEachProviders
 } from 'angular2/testing';
 import {provide} from 'angular2/core';
 import {StoreService} from './store.service';
 import {StoreConfig} from './store.config';
-import {Headers, HTTP_PROVIDERS, BaseRequestOptions, XHRBackend, Response} from 'angular2/http';
+import {HTTP_PROVIDERS, XHRBackend, Response} from 'angular2/http';
 import {MockBackend} from 'angular2/http/testing';
 import {MockConnection} from 'angular2/src/http/backends/mock_backend';
 import {ResponseOptions} from 'angular2/http';

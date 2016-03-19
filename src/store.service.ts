@@ -1,23 +1,25 @@
-import {Injectable, Injector} from 'angular2/core';
-import {Http, URLSearchParams, BaseRequestOptions, RequestOptions, Headers} from 'angular2/http';
+import {Injectable} from 'angular2/core';
+import {Http, URLSearchParams, RequestOptions, Headers} from 'angular2/http';
 import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
 import {BaseModel} from './base.model';
 
-let instance = null;
 
 @Injectable()
 export class StoreService {
-  public static config: StoreConfig
+  public static config: StoreConfig;
   public static customGenerateOptions: Function;
+  public static registedModel: Object[];
+
+
 
   constructor(private http: Http) {}
 
   init(config: StoreConfig) {
     StoreService.config = config;
-  }
 
+  }
   generateRequestOptions(url, method, queryParameters, body) {
     if (StoreService.customGenerateOptions) {
       let options = new RequestOptions();
@@ -26,7 +28,7 @@ export class StoreService {
       Object.keys(createdHeaders).forEach(k => {
         newHeaders.set(k, createdHeaders[k]);
       });
-      options.headers = newHeaders
+      options.headers = newHeaders;
       return options;
     } else {
       return new RequestOptions();
@@ -57,15 +59,15 @@ export class StoreService {
     }
   }
 
-  modelize(model: string) {
+  modelize(model: Object) {
     return m => {
-      m._model = model;
+      m._model = model.name;
       return new BaseModel(m, this);
-    }
+    };
   }
 
   buildUri(model: string) {
-    return `${StoreService.config.baseUri}/${this.simplePluralize(model) }`
+    return `${StoreService.config.baseUri}/${this.simplePluralize(model)}`;
   }
 
   makeRequest(method: string, uri: string, params: Object, body:Object = null) {
@@ -73,7 +75,7 @@ export class StoreService {
     // build query string
     let queryParams = new URLSearchParams();
     Object.keys(params).forEach(k => {
-      queryParams.set(k, params[k])
+      queryParams.set(k, params[k]);
     });
 
     // Create request options
@@ -91,19 +93,30 @@ export class StoreService {
     }
   }
 
+
   rawRequest(method: string, route: string, params: Object, body:Object) {
     return this.http[method](`${StoreService.config.baseUri}/${route}`, params, body);
+  }
+
+  validateModel(name:string) {
+    return StoreService.registedModel.find(function(value) {
+      return value.name === name;
+    });
   }
 
   /**
    * GET /model
    */
   find(model: string, params: Object = {}) {
-    return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
+    let instanceModel = this.validateModel(model);
+    if(!instanceModel) throw Error('Invalid Model');
+    return this.makeRequest('get', this.buildUri(instanceModel.name), params)
+    .map(r => r.json()[this.simplePluralize(model)])
+    .map((array) => {
       let results = [];
       array.forEach(i => {
         i._model = model;
-        results.push(new BaseModel(i, this));
+        results.push(this.modelize(instanceModel));
       });
       return results;
     });
@@ -113,7 +126,11 @@ export class StoreService {
    * GET /model/:id
    */
   findOne(model: string, id: number, params: Object = {}) {
-    return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params).map(r => r.json()[model]).map(this.modelize(model));
+    let instanceModel = this.validateModel(model);
+    if (!instanceModel) throw Error('invalid Model');
+    return this.makeRequest('get', `${this.buildUri(instanceModel.name) }/${id}`, params)
+    .map(r => r.json()[instanceModel.name])
+     .map(this.modelize(instanceModel));
   }
 
   /**
