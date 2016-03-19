@@ -92,17 +92,16 @@ export class StoreService {
         return this.http[method](uri, options, JSON.stringify(body));
     }
   }
-  validateModel(name:string) {
-    for (var i = 0; i < StoreService.registedModel.length; i++) {
-      if (StoreService.registedModel[i].name === name) {
-        return StoreService.registedModel[i];
-      }
-    }
-    throw Error('Invalid Model name');
-  }
+
 
   rawRequest(method: string, route: string, params: Object, body:Object) {
     return this.http[method](`${StoreService.config.baseUri}/${route}`, params, body);
+  }
+
+  validateModel(name:string) {
+    return StoreService.registedModel.find(function(value) {
+      return value.name === name;
+    });
   }
 
   /**
@@ -110,6 +109,7 @@ export class StoreService {
    */
   find(model: string, params: Object = {}) {
     let instanceModel = this.validateModel(model);
+    if(!instanceModel) throw Error('Invalid Model');
     return this.makeRequest('get', this.buildUri(instanceModel.name), params)
     .map(r => r.json()[this.simplePluralize(model)])
     .map((array) => {
@@ -127,6 +127,7 @@ export class StoreService {
    */
   findOne(model: string, id: number, params: Object = {}) {
     let instanceModel = this.validateModel(model);
+    if (!instanceModel) throw Error('invalid Model');
     return this.makeRequest('get', `${this.buildUri(instanceModel.name) }/${id}`, params)
     .map(r => r.json()[instanceModel.name])
      .map(this.modelize(instanceModel));
