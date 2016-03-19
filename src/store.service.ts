@@ -85,6 +85,7 @@ export class StoreService {
     // Switch api based on method
     switch(method) {
       case 'get':
+      case 'delete':
         return this.http[method](uri, options);
       default:
         return this.http[method](uri, JSON.stringify(body), options);
