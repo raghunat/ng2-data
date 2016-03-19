@@ -132,4 +132,21 @@ describe('StoreService Service', () => {
     });
   }));
 
+  it('can pluralize nouns', inject([XHRBackend, StoreService], (mockBackend: MockBackend, store: StoreService) => {
+    let dictionary = {
+      'product': 'products',
+      'sequence': 'sequences',
+      'repo': 'repos',
+      'testsuite': 'testsuites',
+      'bug': 'bugs',
+      'company': 'companies',
+      'fix': 'fixes'
+    };
+
+    let singulars = Object.keys(dictionary);
+    let expected = Object.keys(dictionary).map(key => dictionary[key]);
+    
+    let actuals = singulars.map(store.simplePluralize);
+    expect(expected).toEqual(actuals);
+  }));
 });
