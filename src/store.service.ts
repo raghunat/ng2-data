@@ -62,7 +62,9 @@ export class StoreService {
   modelize(model: Object) {
     return m => {
       m._model = model.name;
-      return new BaseModel(m, this);
+      let newModel = new BaseModel(m, this);
+      //TODO apply the defined objection in defObject
+      return newModel;
     };
   }
 
