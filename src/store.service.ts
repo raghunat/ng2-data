@@ -4,6 +4,9 @@ import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
 import {BaseModel} from './base.model';
+import {AbstractModel} from "./types";
+import {Observable} from "rxjs/Observable";
+import {IActivator} from "./interfaces";
 
 let instance = null;
 
@@ -38,6 +41,7 @@ export class StoreService {
   }
 
   simplePluralize(noun: string) {
+    debugger;
     switch (noun[noun.length - 1]) {
       case 's':
       case 'x':
@@ -100,7 +104,7 @@ export class StoreService {
   /**
    * GET /model
    */
-  find(model: string, params: Object = {}) {
+  _find(model: string, params: Object = {}) {
     return this.makeRequest('get', this.buildUri(model), params).map(r => r.json()[this.simplePluralize(model)]).map((array) => {
       let results = [];
       array.forEach(i => {
@@ -114,14 +118,14 @@ export class StoreService {
   /**
    * GET /model/:id
    */
-  findOne(model: string, id: number, params: Object = {}) {
+  _findOne(model: string, id: number, params: Object = {}) {
     return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params).map(r => r.json()[model]).map(this.modelize(model));
   }
 
   /**
    * POST /model
    */
-  create(model: string, body: Object, params: Object = {}) {
+  _create(model: string, body: Object, params: Object = {}) {
     let data = {};
     data[model] = body;
     return this.makeRequest('post', this.buildUri(model), params, data).map(r => r.json()[model]).map(this.modelize(model));
@@ -142,4 +146,26 @@ export class StoreService {
   destroy(model: string, id: number, body:Object = null, params = {}) {
     return this.makeRequest('delete', `${this.buildUri(model) }/${id}`, params, body).map(r => r.json());
   }
+
+  //======================================================
+  /**
+   *
+   * @param model
+   */
+  find<T extends AbstractModel>(modelType: IActivator, params: Object = {}): Observable<T[]> {
+    let model:string = modelType['_model'];
+
+    return this._find(model, params).map(aBunch => {
+      return aBunch.map(one => new modelType(one));
+    });
+  }
+
+  findOne<T extends AbstractModel>(modelType: Function, id: number, params: Object = {}): Observable<T> {
+    let model:string = modelType['_model'];
+
+    return this._findOne(model, id, params).map(one => {
+      return new modelType(one);
+    });
+  }
 }
+

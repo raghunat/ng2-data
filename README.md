@@ -19,6 +19,57 @@ exports Model.define('student', {
 });
 ```
 
+Or with annotation
+
+```typescript
+import {Model, Type} from 'ng2-data';
+
+abstract class Relationship {
+  query: Function; // executable
+  
+}
+
+class HasMany<T> {
+  models: T[];
+
+  construct(model: T) {
+  }
+}
+
+class HasOne<T> {
+  model: T;
+  
+  construct(model: T) {
+  }
+}
+
+
+@Model({
+  name: 'student'
+})
+class Student {
+  name: string;
+  age: number;
+  
+  classes: Type.has.many(Course);
+  school: Type.has.one(School);
+  contact: Type.embed(Contact);
+}
+```
+
+@Model({
+  name: 'course'
+})
+class Course {
+}
+
+@Model({
+  name: 'school'
+})
+class School {
+}
+
+
 ### Loading Store
 ```javascript
 import {StoreService, StoreConfig} from 'ng2-data';
@@ -61,4 +112,44 @@ export class MyComponent {
     store.destroy('schools', 1).subscribe(/*...*/); // Returns OK
   }
 }
+```
+
+OR with TypeScript
+
+```typescript
+import {StoreService} from 'ng2-data';
+// given an instance of StoreService variable called store
+
+// GET /students?param1=value1
+store.find(User, { param1: value1 }).subscribe(/*...*/);
+
+// GET /students/1
+store.findOne(User, 1).subscribe(/*...*/);
+
+// GET /students/1?includes=courses,school
+store.findOne(User, 1).include(User.courses, User.school).subscribe(/*...*/);
+
+// POST /students
+let school = aSchoolThatIhaveRetrievedSomewhere;
+let student = new Student();
+student.school = school;
+
+store.create(student).subscribe(/*...*/);
+// OR
+student.save().subscribe(/*...*/);
+
+// PUT /students/1
+let student = aStudentThatIknew;
+
+student.age = 30;
+store.update(student).subscribe(/*...*/);
+// OR
+student.save().subscribe(/*...*/);
+
+// DELETE /users/1
+let student = aStudentThatIknew;
+
+store.destroy('schools', 1).subscribe(/*...*/); // Returns OK
+// OR
+student.destroy().subscribe(/*...*/);
 ```

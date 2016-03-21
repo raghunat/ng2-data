@@ -29,7 +29,7 @@ export class BaseModel {
     if (this.id !== undefined) {
       return this.store.update(this._model, this.id, this.stripForRequest());
     } else {
-      return this.store.create(this._model, this.stripForRequest());
+      return this.store._create(this._model, this.stripForRequest());
     }
   }
 
