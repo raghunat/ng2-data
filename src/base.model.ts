@@ -1,8 +1,17 @@
 import {StoreService} from './store.service';
 
 export class BaseModel {
-  public id:any
-  public _model:string
+
+  public id: any;
+  public _model: string;
+
+  /**
+Definition of statically defined method
+**/
+  public static define(model: string, defObject: Object = {}) {
+    StoreService.registedModel.push({ name: model, defObject: defObject });
+  }
+
 
   constructor(params:Object = {}, private store: StoreService) {
     Object.assign(this, params);
@@ -36,4 +45,7 @@ export class BaseModel {
   destroy() {
     return this.store.destroy(this._model, this.id);
   }
+
+
 }
+
