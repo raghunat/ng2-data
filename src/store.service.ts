@@ -152,20 +152,42 @@ export class StoreService {
    *
    * @param model
    */
-  find<T extends AbstractModel>(modelType: IActivator, params: Object = {}): Observable<T[]> {
+  find<T extends AbstractModel>(modelType: IActivator<T>, params: Object = {}): Observable<T[]> {
     let model:string = modelType['_model'];
 
-    return this._find(model, params).map(aBunch => {
-      return aBunch.map(one => new modelType(one));
-    });
+    return this.makeRequest('get', this.buildUri(model), params)
+      .map(r => r.json()[this.simplePluralize(model)])
+      .map((array) => {
+        return array.map(one => new modelType(one));
+      });
   }
 
-  findOne<T extends AbstractModel>(modelType: Function, id: number, params: Object = {}): Observable<T> {
+  findOne<T extends AbstractModel>(modelType: IActivator<T>, id: number, params: Object = {}): Observable<T> {
     let model:string = modelType['_model'];
 
-    return this._findOne(model, id, params).map(one => {
-      return new modelType(one);
-    });
+    return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params)
+      .map(r => r.json()[model])
+      .map(one => {
+        return new modelType(one);
+      });
+  }
+
+  create<T extends AbstractModel>(modelInstance: T, params: Object = {}): Observable<T> {
+    let modelType = modelInstance.constructor;
+    let model:string = modelType['_model'];
+    
+    let data = {};
+    data[model] = modelInstance.toJSON();
+    return this.makeRequest('post', this.buildUri(model), params, data)
+      .map(r => r.json()[model])
+      .map(one => {
+        if (!('id' in one)) {
+          throw new Error('Expected ID missing');
+        }
+
+        modelInstance.id = one['id'];
+        return modelInstance;
+      });
   }
 }
 

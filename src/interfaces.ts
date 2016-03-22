@@ -5,5 +5,5 @@ export interface ModelDecoratorConfigs {
 }
 
 export interface IActivator<T extends AbstractModel> {
-  new (...args: any[]): T;
+  new (...args: any[]);
 }

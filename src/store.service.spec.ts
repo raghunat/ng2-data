@@ -52,7 +52,7 @@ describe('StoreService Service', () => {
       expect(users[0] instanceof User).toBe(true);
 
       expect(users[0].id).toBe(1);
-      expect(users[0].name).toBe('stephen');
+      expect(users[0]['name']).toBe('stephen');
     });
   }));
 
@@ -77,11 +77,11 @@ describe('StoreService Service', () => {
       expect(user instanceof User).toBe(true);
 
       expect(user.id).toBe(1);
-      expect(user.name).toBe('stephen');
+      expect(user['name']).toBe('stephen');
     });
   }));
-  /***
-   it('should create a user', inject([XHRBackend, StoreService], (mockBackend: MockBackend, store: StoreService) => {
+  
+  it('should create a user', inject([XHRBackend, StoreService], (mockBackend: MockBackend, store: StoreService) => {
     // prep
     mockBackend.connections.subscribe(
       (connection: MockConnection) => {
@@ -98,12 +98,17 @@ describe('StoreService Service', () => {
 
     // test
     store.init(new StoreConfig({ baseUri: 'http://localhost' }));
-    store.create('user', { name: 'stephen' }).subscribe(user => {
-      expect(user.id).toBe(1);
-      expect(user.name).toBe('stephen');
+     
+    let newUser = new User({ name: 'stephen' }); 
+    store.create(newUser).subscribe(user => {
+      expect(user instanceof User).toBe(true);
+
+      expect(newUser).toBe(user);
+      expect(user['id']).toBe(1);
+      expect(user['name']).toBe('stephen');
     });
   }));
-
+  /***
    it('should update a user', inject([XHRBackend, StoreService], (mockBackend: MockBackend, store: StoreService) => {
     // prep
     mockBackend.connections.subscribe(
