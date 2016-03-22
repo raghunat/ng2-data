@@ -41,7 +41,6 @@ export class StoreService {
   }
 
   simplePluralize(noun: string) {
-    debugger;
     switch (noun[noun.length - 1]) {
       case 's':
       case 'x':
@@ -166,9 +165,56 @@ export class StoreService {
     let model:string = modelType['_model'];
 
     return this.makeRequest('get', `${this.buildUri(model) }/${id}`, params)
-      .map(r => r.json()[model])
-      .map(one => {
-        return new modelType(one);
+      .map(r => r.json())
+      .map(json => {
+        let data = json[model];
+
+        // Get the list of relationships to load
+        let instance = new modelType(data);
+        let params = {};
+        let prototype = modelType.prototype;
+        let relationships = [];
+        
+        if ('_hasOne' in prototype && prototype['_hasOne']) {
+          Object.keys(prototype['_hasOne']).forEach(function (propertyName) {
+            params[propertyName] = data[propertyName];
+
+            relationships.push(prototype['_hasOne'][propertyName]);
+          });
+        }
+
+        if ('_hasMany' in prototype && prototype['_hasMany']) {
+          Object.keys(prototype['_hasMany']).forEach(function (propertyName) {
+            params[propertyName] = data[propertyName];
+
+            relationships.push(prototype['_hasMany'][propertyName]);
+          });
+        }
+
+        console.debug('Relationships and Parameters for relationships', relationships, params);
+        relationships.forEach((relationship) => {
+          debugger;
+
+          let relatedModel = relationship.model;
+          let relatedModelType = relationship.modelType;
+          
+          let plural = this.simplePluralize(relatedModel);
+          let relatedID = params[relationship.propertyName];
+          let relatedData;
+          let relatedInstance;
+          
+          if (plural in data) {
+            relatedData = data[plural].find(function (item) { return item.id === relatedID; })
+            relatedInstance = new relatedModelType(relatedData);
+
+            instance[relationship.propertyName] = relatedInstance;
+            // relationship.restore(instance, data);
+          }
+          
+          relationship.load(this, params);
+        });
+
+        return instance;
       });
   }
 

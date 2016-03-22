@@ -17,14 +17,25 @@ import {MockBackend} from 'angular2/http/testing';
 import {MockConnection} from 'angular2/src/http/backends/mock_backend';
 import {ResponseOptions} from 'angular2/http';
 
-import {AbstractModel} from "./types";
-import {Model} from "./annotations";
+import {AbstractModel, PropertyTypes} from "./types";
+import {Model, HasOne} from "./annotations";
+
+@Model({
+  model: 'team'
+})
+class Team extends AbstractModel {
+  name: string
+}
 
 @Model({
   model: 'user'
 })
 class User extends AbstractModel {
   name: string;
+  @HasOne({
+    type: PropertyTypes.HasOne
+  })
+  team: Team;
 }
 
 describe('StoreService Service', () => {
@@ -40,8 +51,15 @@ describe('StoreService Service', () => {
             body: {
               users: [{
                 id: 1,
-                name: 'stephen'
-              }]
+                name: 'stephen',
+                team: 30
+              }],
+              teams: [
+                {
+                  id: 30,
+                  name: 'CI Team'
+                }
+              ]
             }
           })));
       });
@@ -65,8 +83,15 @@ describe('StoreService Service', () => {
             body: {
               user: {
                 id: 1,
-                name: 'stephen'
-              }
+                name: 'stephen',
+                team: 30
+              },
+              teams: [
+                {
+                  id: 30,
+                  name: 'CI Team'
+                }
+              ]
             }
           })));
       });
