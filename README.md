@@ -55,7 +55,6 @@ class Student {
   school: Type.has.one(School);
   contact: Type.embed(Contact);
 }
-```
 
 @Model({
   name: 'course'
@@ -68,7 +67,7 @@ class Course {
 })
 class School {
 }
-
+```
 
 ### Loading Store
 ```javascript
