@@ -130,7 +130,7 @@ export class StoreService {
   /**
    * PUT /model/:id
    */
-  update(model: string, id: number, body: Object, params: Object = {}) {
+  update(model: string, id: string|number, body: Object, params: Object = {}) {
     let data = {};
     data[model] = body;
     return this.makeRequest('put', `${this.buildUri(model) }/${id}`, params, data).map(r => r.json()[model]).map(this.modelize(model));
