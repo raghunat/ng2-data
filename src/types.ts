@@ -17,9 +17,9 @@ export class AbstractModel {
   }
 
   save () {}
-  
+
   destroy () {
-    
+
   }
 
   toJSON (): Object {
@@ -76,7 +76,7 @@ export class OneToOneRelationship<T extends AbstractModel> extends Relationship<
   }
 
   restore (ownerInstance: AbstractModel, data: Object, params: Object): void {
-    
+
   }
 }
 
@@ -86,6 +86,6 @@ export class OneToManyRelationship<T extends AbstractModel> extends Relationship
   }
 
   restore (ownerInstance: AbstractModel, data: Object, params: Object): void {
-    
+
   }
 }

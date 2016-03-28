@@ -3,11 +3,12 @@ import {PropertyTypes, OneToManyRelationship, OneToOneRelationship} from "./type
 
 /**
  * Model is a class decorator
- * 
+ *
  * @constructor
  */
 export function Model (config: ModelDecoratorConfigs) {
   console.log(`Picking up model registration information`);
+
 
   return modelDecorator.bind(null, config);
 }

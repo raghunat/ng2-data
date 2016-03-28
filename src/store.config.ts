@@ -1,6 +1,6 @@
 /**
  * Input Class
- */
+*/
 export class StoreConfig {
   public baseUri: string
   constructor(config:any = {}) {
