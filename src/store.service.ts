@@ -74,7 +74,7 @@ export class StoreService {
     // build query string
     let queryParams = new URLSearchParams();
     Object.keys(params).forEach(k => {
-      queryParams.set(k, JSON.stringify(params[k]))
+      queryParams.set(k, typeof params[k] !== 'string' ? JSON.stringify(params[k]) : params[k]);
     });
 
     // Create request options
