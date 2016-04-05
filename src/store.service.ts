@@ -11,6 +11,7 @@ let instance = null;
 export class StoreService {
   public static config: StoreConfig
   public static customGenerateOptions: Function;
+  public static customGenerateQuery: Function;
 
   constructor(private http: Http) {}
 
@@ -31,6 +32,14 @@ export class StoreService {
     } else {
       return new RequestOptions();
     }
+  }
+
+  generateRequestQuery(url, method, queryParameters, body) {
+    let query = {};
+    if (StoreService.customGenerateQuery) {
+      Object.assign(query, StoreService.customGenerateQuery(url, method, queryParameters, body));
+    }
+    return query;
   }
 
   extendHeaders(fn: Function) {
@@ -73,6 +82,9 @@ export class StoreService {
 
     // build query string
     let queryParams = new URLSearchParams();
+    // build query
+    params = this.generateRequestQuery(uri, method, params, body);
+    // url-ify
     Object.keys(params).forEach(k => {
       queryParams.set(k, typeof params[k] !== 'string' ? JSON.stringify(params[k]) : params[k]);
     });
