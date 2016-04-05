@@ -101,6 +101,7 @@ export class StoreService {
     params = this.generateRequestQuery(uri, method, params, body);
     // url-ify
     Object.keys(params).forEach(k => {
+      this.log(k, {});
       queryParams.set(k, typeof params[k] !== 'string' ? JSON.stringify(params[k]) : params[k]);
     });
 
@@ -109,6 +110,8 @@ export class StoreService {
 
     // Add query string
     options.search = queryParams;
+
+    this.log('Performing request with the following options', options);
 
     // Switch api based on method
     switch(method) {
