@@ -1,6 +1,6 @@
 {
   "name": "ng2-data",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Convential HTTP client for Model Data in Angular 2",
   "repository": {
     "type": "git",

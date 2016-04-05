@@ -38,6 +38,8 @@ export class StoreService {
     let query = {};
     if (StoreService.customGenerateQuery) {
       Object.assign(query, StoreService.customGenerateQuery(url, method, queryParameters, body));
+    } else {
+      Object.assign(query, queryParameters);
     }
     return query;
   }
