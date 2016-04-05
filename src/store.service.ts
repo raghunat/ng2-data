@@ -6,6 +6,7 @@ import {StoreConfig} from './store.config';
 import {BaseModel} from './base.model';
 
 let instance = null;
+declare var NG2_DATA_LOG;
 
 @Injectable()
 export class StoreService {
@@ -19,19 +20,25 @@ export class StoreService {
     StoreService.config = config;
   }
 
+  log(msg, data) {
+    if (NG2_DATA_LOG) {
+      console.log('[ng2-data]', msg, data);
+    }
+  }
+
   generateRequestOptions(url, method, queryParameters, body) {
+    let options = new RequestOptions();
     if (StoreService.customGenerateOptions) {
-      let options = new RequestOptions();
       let createdHeaders = StoreService.customGenerateOptions(url, method, queryParameters, body);
       let newHeaders = new Headers();
       Object.keys(createdHeaders).forEach(k => {
         newHeaders.set(k, createdHeaders[k]);
       });
       options.headers = newHeaders
-      return options;
-    } else {
-      return new RequestOptions();
+
     }
+    this.log('Generated The Following headers', options);
+    return options;
   }
 
   generateRequestQuery(url, method, queryParameters, body) {
@@ -41,6 +48,7 @@ export class StoreService {
     } else {
       Object.assign(query, queryParameters);
     }
+    this.log('Generated The following query parameters', query);
     return query;
   }
 
