@@ -6,7 +6,6 @@ import {StoreConfig} from './store.config';
 import {BaseModel} from './base.model';
 
 let instance = null;
-declare var NG2_DATA_LOG;
 
 @Injectable()
 export class StoreService {
@@ -21,7 +20,7 @@ export class StoreService {
   }
 
   log(msg, data) {
-    if (NG2_DATA_LOG) {
+    if (window['NG2_DATA_LOG']) {
       console.log('[ng2-data]', msg, data);
     }
   }
