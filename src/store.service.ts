@@ -26,6 +26,7 @@ export class StoreService {
   }
 
   generateRequestOptions(url, method, queryParameters, body) {
+    this.log('Generating headers with', arguments);
     let options = new RequestOptions();
     if (StoreService.customGenerateOptions) {
       let createdHeaders = StoreService.customGenerateOptions(url, method, queryParameters, body);
@@ -41,6 +42,7 @@ export class StoreService {
   }
 
   generateRequestQuery(url, method, queryParameters, body) {
+    this.log('Generating query parameters with', arguments);
     let query = {};
     if (StoreService.customGenerateQuery) {
       Object.assign(query, StoreService.customGenerateQuery(url, method, queryParameters, body));
