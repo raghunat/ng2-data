@@ -46,6 +46,10 @@ export class StoreService {
     StoreService.customGenerateOptions = fn;
   }
 
+  extendQueryParameters(fn: Function) {
+    StoreService.customGenerateQuery = fn;
+  }
+
   simplePluralize(noun: string) {
     switch (noun[noun.length - 1]) {
       case 's':
