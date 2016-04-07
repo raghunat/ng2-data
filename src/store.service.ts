@@ -102,7 +102,7 @@ export class StoreService {
     // url-ify
     Object.keys(params).forEach(k => {
       this.log(k, {});
-      queryParams.set(k, typeof params[k] !== 'string' ? JSON.stringify(params[k]).replace(/\{/g, '%7B').replace(/\}/g, '%7D') : params[k]);
+      queryParams.set(k, (typeof params[k] !== 'string' ? JSON.stringify(params[k]) : params[k]).replace(/\{/g, '%7B').replace(/\}/g, '%7D'));
     });
 
     // Create request options
