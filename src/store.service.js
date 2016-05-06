@@ -108,7 +108,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', './base.model'], f
                     // url-ify
                     Object.keys(params).forEach(function (k) {
                         _this.log(k, {});
-                        if (params[k]) {
+                        if (params[k] !== undefined) {
                             queryParams.set(k, (typeof params[k] !== 'string' ? JSON.stringify(params[k]) : params[k]).replace(/\{/g, '%7B').replace(/\}/g, '%7D'));
                         }
                     });
