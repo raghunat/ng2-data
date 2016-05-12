@@ -1,4 +1,6 @@
-System.register(['angular2/testing', 'angular2/core', 'angular2/http', 'angular2/http/testing', './store.service', './base.model'], function(exports_1) {
+System.register(['@angular/core/testing', '@angular/core', '@angular/http', '@angular/http/testing', './store.service', './base.model'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var testing_1, core_1, http_1, testing_2, store_service_1, base_model_1;
     var MockStore;
     return {
@@ -51,7 +53,7 @@ System.register(['angular2/testing', 'angular2/core', 'angular2/http', 'angular2
                     };
                 };
                 return MockStore;
-            })();
+            }());
             testing_1.describe('Base Model', function () {
                 testing_1.beforeEachProviders(function () { return [core_1.provide(store_service_1.StoreService, { useClass: MockStore }), http_1.HTTP_PROVIDERS, core_1.provide(http_1.XHRBackend, { useClass: testing_2.MockBackend })]; });
                 testing_1.it('should delete a user', testing_1.inject([http_1.XHRBackend, store_service_1.StoreService], function (mockBackend, store) {

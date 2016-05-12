@@ -1,4 +1,6 @@
-System.register(['angular2/testing', 'angular2/core', './store.service', './store.config', 'angular2/http', 'angular2/http/testing'], function(exports_1) {
+System.register(['@angular/core/testing', '@angular/core', './store.service', './store.config', '@angular/http', '@angular/http/testing'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var testing_1, core_1, store_service_1, store_config_1, http_1, testing_2, http_2;
     return {
         setters:[

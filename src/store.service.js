@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', './base.model'], function(exports_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Rx', './base.model'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -40,12 +42,12 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', './base.model'], f
                     this.log('Generating headers with', arguments);
                     var options = new http_1.RequestOptions();
                     if (StoreService.customGenerateOptions) {
-                        var createdHeaders = StoreService.customGenerateOptions(url, method, queryParameters, body);
-                        var newHeaders = new http_1.Headers();
-                        Object.keys(createdHeaders).forEach(function (k) {
-                            newHeaders.set(k, createdHeaders[k]);
+                        var createdHeaders_1 = StoreService.customGenerateOptions(url, method, queryParameters, body);
+                        var newHeaders_1 = new http_1.Headers();
+                        Object.keys(createdHeaders_1).forEach(function (k) {
+                            newHeaders_1.set(k, createdHeaders_1[k]);
                         });
-                        options.headers = newHeaders;
+                        options.headers = newHeaders_1;
                     }
                     this.log('Generated The Following headers', options);
                     return options;
@@ -182,7 +184,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', './base.model'], f
                     __metadata('design:paramtypes', [http_1.Http])
                 ], StoreService);
                 return StoreService;
-            })();
+            }());
             exports_1("StoreService", StoreService);
         }
     }
