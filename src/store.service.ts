@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Http, URLSearchParams, RequestOptions, Headers} from '@angular/http';
+import {Injectable} from 'angular2/core';
+import {Http, URLSearchParams, RequestOptions, Headers} from 'angular2/http';
 import 'rxjs/Rx';
 
 import {StoreConfig} from './store.config';
@@ -9,7 +9,7 @@ let instance = null;
 
 @Injectable()
 export class StoreService {
-  public static config: StoreConfig
+  public static config: StoreConfig;
   public static customGenerateOptions: Function;
   public static customGenerateQuery: Function;
 

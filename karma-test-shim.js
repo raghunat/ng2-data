@@ -20,7 +20,7 @@ System.config({
   }
 });
 
-System.import('@angular/core/testing').then(function (testing) {
+System.import('angular2/core').then(function (testing) {
   return System.import('angular2/platform/testing/browser').then(function (providers) {
     testing.setBaseTestProviders(providers.TEST_BROWSER_PLATFORM_PROVIDERS,
       providers.TEST_BROWSER_APPLICATION_PROVIDERS);

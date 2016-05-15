@@ -5,8 +5,8 @@ import {
   expect,
   it,
   inject,
-  injectAsync
-} from '@angular/core/testing';
+   injectAsync
+} from 'angular2/testing';
 
 import {StoreConfig} from './store.config';
 
