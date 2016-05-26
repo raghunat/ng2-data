@@ -8,14 +8,14 @@ inject,
 injectAsync,
 
 beforeEachProviders
-} from 'angular2/testing';
-import {provide} from 'angular2/core';
+} from '@angular/core/testing';
+import {provide} from '@angular/core';
 import {StoreService} from './store.service';
 import {StoreConfig} from './store.config';
-import {Headers, HTTP_PROVIDERS, BaseRequestOptions, XHRBackend, Response} from 'angular2/http';
-import {MockBackend} from 'angular2/http/testing';
-import {MockConnection} from 'angular2/http/testing';
-import {ResponseOptions} from 'angular2/http';
+import {Headers, HTTP_PROVIDERS, BaseRequestOptions, XHRBackend, Response} from '@angular/http';
+import {MockBackend} from '@angular/http/testing';
+import {MockConnection} from '@angular/http/testing';
+import {ResponseOptions} from '@angular/http';
 
 describe('StoreService Service', () => {
 

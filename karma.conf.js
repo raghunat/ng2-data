@@ -27,7 +27,7 @@ module.exports = function (config) {
         included: true,
         watched: true
       }, {
-        pattern: 'node_modules/angular2/bundles/angular2-polyfills.js',
+        pattern: 'node_modules/@angular/bundles/@angular-polyfills.js',
         included: true,
         watched: true
       }, {
@@ -35,19 +35,19 @@ module.exports = function (config) {
         included: true,
         watched: true
       }, {
-        pattern: 'node_modules/angular2/bundles/angular2.js',
+        pattern: 'node_modules/@angular/bundles/@angular.js',
         included: true,
         watched: true
       }, {
-        pattern: 'node_modules/angular2/bundles/http.dev.js',
+        pattern: 'node_modules/@angular/bundles/http.dev.js',
         included: true,
         watched: true
       }, {
-        pattern: 'node_modules/angular2/bundles/router.dev.js',
+        pattern: 'node_modules/@angular/bundles/router.dev.js',
         included: true,
         watched: true
       }, {
-        pattern: 'node_modules/angular2/bundles/testing.dev.js',
+        pattern: 'node_modules/@angular/bundles/testing.dev.js',
         included: true,
         watched: true
       }, {
